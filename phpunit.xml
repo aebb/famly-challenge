@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- https://phpunit.readthedocs.io/en/latest/configuration.html -->
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd" backupGlobals="false" colors="true" bootstrap="tests/bootstrap.php">
+  <coverage processUncoveredFiles="true">
+    <include>
+      <directory suffix=".php">src</directory>
+    </include>
+    <exclude>
+      <file>src/Kernel.php</file>
+    </exclude>
+  </coverage>
+  <php>
+    <ini name="error_reporting" value="-1"/>
+    <server name="KERNEL_CLASS" value="App\Kernel" force="true"/>
+    <server name="APP_ENV" value="test" force="true"/>
+    <server name="SHELL_VERBOSITY" value="-1"/>
+    <server name="SYMFONY_PHPUNIT_REMOVE" value=""/>
+    <server name="SYMFONY_PHPUNIT_VERSION" value="7.5"/>
+    <env name="MYSQL_DATABASE_DRIVER" value="pdo_sqlite"/>
+    <env name="MYSQL_DATABASE_HOST" value=":memory:"/>
+    <env name="MYSQL_DATABASE_PORT" value="3306"/>
+    <env name="MYSQL_DATABASE_VERSION" value="3"/>
+    <env name="MYSQL_DATABASE" value="local"/>
+    <env name="MYSQL_DATABASE_USER" value="root"/>
+    <env name="MYSQL_DATABASE_PASSWORD" value="root"/>
+    <env name="LIST_LIMIT" value="50"/>
+  </php>
+  <testsuites>
+    <testsuite name="all">
+      <directory>tests</directory>
+    </testsuite>
+    <testsuite name="Unit">
+      <directory>tests/Unit</directory>
+    </testsuite>
+    <testsuite name="Integration">
+      <directory>tests/Integration</directory>
+    </testsuite>
+  </testsuites>
+  <listeners>
+    <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>
+  </listeners>
+</phpunit>

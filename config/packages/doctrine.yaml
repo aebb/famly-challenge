@@ -1,0 +1,42 @@
+doctrine:
+    dbal:
+        default_connection: default
+        connections:
+            default:
+                driver:               '%env(resolve:MYSQL_DATABASE_DRIVER)%'
+                dbname:               '%env(resolve:MYSQL_DATABASE)%'
+                host:                 '%env(resolve:MYSQL_DATABASE_HOST)%'
+                port:                 '%env(resolve:MYSQL_DATABASE_PORT)%'
+                user:                 '%env(resolve:MYSQL_DATABASE_USER)%'
+                password:             '%env(resolve:MYSQL_DATABASE_PASSWORD)%'
+                server_version:       '%env(resolve:MYSQL_DATABASE_VERSION)%'
+    orm:
+        default_entity_manager: default
+        entity_managers:
+            default:
+                connection: default
+                mappings:
+                    Local:
+                        is_bundle: false
+                        type: annotation
+                        dir: '%kernel.project_dir%/src/Entity'
+                        prefix: 'App\Entity'
+                        alias: Local
+when@prod:
+    doctrine:
+        orm:
+            auto_generate_proxy_classes: false
+            query_cache_driver:
+                type: pool
+                pool: doctrine.system_cache_pool
+            result_cache_driver:
+                type: pool
+                pool: doctrine.result_cache_pool
+
+    framework:
+        cache:
+            pools:
+                doctrine.result_cache_pool:
+                    adapter: cache.app
+                doctrine.system_cache_pool:
+                    adapter: cache.system

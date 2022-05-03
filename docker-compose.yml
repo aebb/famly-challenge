@@ -1,0 +1,35 @@
+version: '3'
+services:
+  task-famly:
+    container_name: task-famly
+    image: webdevops/php-nginx-dev:8.1
+    restart: always
+    working_dir: /app
+    environment:
+      WEB_DOCUMENT_ROOT: /app/public
+      WEB_DOCUMENT_INDEX: index.php
+      XDEBUG_REMOTE_AUTOSTART: 1
+      XDEBUG_MODE: debug
+      XDEBUG_CLIENT_HOST: '172.17.0.1'
+      XDEBUG_CLIENT_PORT: 9000
+      XDEBUG_DISCOVER_CLIENT_HOST: 0
+      XDEBUG_START_WITH_REQUEST: 'yes'
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/app:rw,cached
+    depends_on:
+      - database-famly
+  database-famly:
+    container_name: database-famly
+    image: mariadb:10.4.13
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: database-famly
+    command:
+      'mysqld --default-authentication-plugin=mysql_native_password --innodb-flush-method=fsync --innodb-use-native-aio=0'
+    volumes:
+      - db_data:/var/lib/mysql
+volumes:
+  db_data: {}
